@@ -9,4 +9,5 @@ export interface IAnime {
   name: string;
   russian: string;
   status: Statuses;
+  rating: number | null;
 }

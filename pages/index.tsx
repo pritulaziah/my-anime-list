@@ -8,19 +8,29 @@ import {
 } from "@tanstack/react-table";
 import { useMemo } from "react";
 import statusCollection from "constants/statusCollection";
+import Rating from "components/Rating";
 
 const animes: IAnime[] = [
   {
     id: 16498,
     name: "Shingeki no Kyojin",
     russian: "Атака титанов",
-    status: Statuses.Dropped,
+    status: Statuses.Viewed,
+    rating: 7,
   },
   {
     id: 1,
     name: "Shingeki no Kyojin",
     russian: "Атака титанов",
+    status: Statuses.Viewed,
+    rating: 6,
+  },
+  {
+    id: 2,
+    name: "Shingeki no Kyojin",
+    russian: "Атака титанов",
     status: Statuses.InProgress,
+    rating: null,
   },
 ];
 
@@ -31,13 +41,25 @@ const Home = () => {
     () => [
       columnHelper.accessor((row) => `${row.name} / ${row.russian}`, {
         id: "name",
-        cell: (anime) => <i>{anime.getValue()}</i>,
+        cell: (anime) => anime.getValue(),
         header: () => <span>Name</span>,
       }),
       columnHelper.accessor((row) => statusCollection[row.status], {
         id: "status",
-        cell: (anime) => <i>{anime.getValue()}</i>,
+        cell: (anime) => anime.getValue(),
         header: () => <span>Status</span>,
+      }),
+      columnHelper.accessor((row) => row.rating, {
+        id: "rating",
+        cell: (anime) => {
+          const rating = anime.getValue();
+          return (
+            <div className="flex justify-start">
+              {rating ? <Rating value={rating / 2} readonly /> : "n/a"}
+            </div>
+          );
+        },
+        header: () => <span>Rating</span>,
       }),
     ],
     []
