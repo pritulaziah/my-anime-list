@@ -6,65 +6,76 @@ import {
   getCoreRowModel,
   flexRender,
 } from "@tanstack/react-table";
-import { useMemo } from "react";
 import statusCollection from "constants/statusCollection";
 import Rating from "components/Rating";
+import Progress from "components/Progress";
 
 const animes: IAnime[] = [
   {
-    id: 16498,
-    name: "Shingeki no Kyojin",
-    russian: "Атака титанов",
-    status: Statuses.Viewed,
-    rating: 7,
-  },
-  {
-    id: 1,
-    name: "Shingeki no Kyojin",
-    russian: "Атака титанов",
-    status: Statuses.Viewed,
-    rating: 6,
-  },
-  {
-    id: 2,
-    name: "Shingeki no Kyojin",
-    russian: "Атака титанов",
+    id: 47194,
+    name: "Summertime Render",
+    russian: "Летнее время",
     status: Statuses.InProgress,
     rating: null,
+    episodes: 25,
+    episodes_watch: 11,
+  },
+  {
+    id: 30015,
+    name: "ReLIFE",
+    russian: "Повторная жизнь",
+    status: Statuses.Done,
+    rating: 9.5,
+    episodes: 13,
+    episodes_watch: 13,
   },
 ];
 
 const columnHelper = createColumnHelper<IAnime>();
 
-const Home = () => {
-  const columns = useMemo(
-    () => [
-      columnHelper.accessor((row) => `${row.name} / ${row.russian}`, {
-        id: "name",
-        cell: (anime) => anime.getValue(),
-        header: () => <span>Name</span>,
-      }),
-      columnHelper.accessor((row) => statusCollection[row.status], {
-        id: "status",
-        cell: (anime) => anime.getValue(),
-        header: () => <span>Status</span>,
-      }),
-      columnHelper.accessor((row) => row.rating, {
-        id: "rating",
-        cell: (anime) => {
-          const rating = anime.getValue();
-          return (
-            <div className="flex justify-start">
-              {rating ? <Rating value={rating / 2} readonly /> : "n/a"}
-            </div>
-          );
-        },
-        header: () => <span>Rating</span>,
-      }),
-    ],
-    []
-  );
+const columns = [
+  columnHelper.accessor((row) => `${row.name} / ${row.russian}`, {
+    id: "name",
+    cell: (cell) => <b>{cell.getValue()}</b>,
+    header: () => <span>Name</span>,
+  }),
+  columnHelper.accessor((row) => statusCollection[row.status], {
+    id: "status",
+    cell: (cell) => cell.getValue(),
+    header: () => <span>Status</span>,
+  }),
+  columnHelper.accessor((row) => row.rating, {
+    id: "rating",
+    cell: (cell) => {
+      const rating = cell.getValue();
+      return (
+        <div className="flex justify-start">
+          {rating ? <Rating value={rating / 2} readonly /> : "n/a"}
+        </div>
+      );
+    },
+    header: () => <span>Rating</span>,
+  }),
+  columnHelper.accessor((row) => [row.episodes_watch, row.episodes], {
+    id: "progress",
+    cell: (cell) => {
+      const [episodesWatch, episodes] = cell.getValue();
+      return episodesWatch ? (
+        <Progress
+          progress={(episodesWatch / episodes!) * 100}
+          label={`${episodesWatch}/${episodes}`}
+          size={80}
+          strokeWidth={8}
+        />
+      ) : (
+        "n/a"
+      );
+    },
+    header: () => <span>Progress</span>,
+  }),
+];
 
+const Home = () => {
   const table = useReactTable({
     data: animes,
     columns,

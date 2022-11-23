@@ -3,8 +3,8 @@ import { Statuses } from "types/anime";
 const statusCollection: {
   [key in Statuses]: string;
 } = {
-  [Statuses.Dropped]: "Бросил",
-  [Statuses.Viewed]: "Просмотренно",
+  [Statuses.Closed]: "Бросил",
+  [Statuses.Done]: "Просмотренно",
   [Statuses.InProgress]: "Смотрю",
 };
 

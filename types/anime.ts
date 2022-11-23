@@ -1,6 +1,6 @@
 export enum Statuses {
-  Dropped = "dropped",
-  Viewed = "viewed",
+  Closed = "closed",
+  Done = "done",
   InProgress = "inProgress",
 }
 
@@ -10,4 +10,6 @@ export interface IAnime {
   russian: string;
   status: Statuses;
   rating: number | null;
+  episodes: number;
+  episodes_watch: number | null;
 }
