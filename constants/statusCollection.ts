@@ -6,6 +6,7 @@ const statusCollection: {
   [Statuses.Closed]: "Бросил",
   [Statuses.Done]: "Просмотренно",
   [Statuses.InProgress]: "Смотрю",
+  [Statuses.Paused]: "На паузе",
 };
 
 export default statusCollection;

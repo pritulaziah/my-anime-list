@@ -4,36 +4,51 @@ import React from "react";
 import clsx from "clsx";
 
 interface IProps {
-  starsCount?: number;
+  count?: number;
   value?: number;
   readonly?: boolean;
+  label?: React.ReactNode;
+  size?: number;
 }
 
-const Rating = ({ starsCount = 5, value = 0, readonly = false }: IProps) => {
-  const starArray = Array.from({ length: starsCount });
-  const valuePercentage = Math.round((value / starsCount) * 100);
+const Rating = ({
+  count = 5,
+  value = 0,
+  readonly = false,
+  size = 24,
+  label,
+}: IProps) => {
+  const starArray = Array.from({ length: count });
+  const valuePercentage = Math.round((value / count) * 100);
 
   const renderStart = (key: React.Key) => (
     <FontAwesomeIcon
       key={key}
       icon={faStar}
-      width={24}
-      height={24}
+      width={size}
+      height={size}
       className="inline-block"
     />
   );
 
   return (
-    <div className={clsx(["relative overflow-hidden", readonly && "pointer"])}>
-      <div className="text-gray-300">
-        {starArray.map((_, index) => renderStart(index))}
-      </div>
+    <div className="flex items-center">
       <div
-        className="text-yellow-400 absolute left-0 top-0 overflow-hidden whitespace-nowrap"
-        style={{ width: `${valuePercentage}%` }}
+        className={clsx(["relative overflow-hidden", { pointer: !readonly }])}
       >
-        {starArray.map((_, index) => renderStart(index))}
+        <div className="text-gray-300">
+          {starArray.map((_, index) => renderStart(index))}
+        </div>
+        <div
+          className="text-yellow-400 absolute left-0 top-0 overflow-hidden whitespace-nowrap"
+          style={{ width: `${valuePercentage}%` }}
+        >
+          {starArray.map((_, index) => renderStart(index))}
+        </div>
       </div>
+      {label && (
+        <span className="ml-2 text-sm font-medium text-gray-500">{label}</span>
+      )}
     </div>
   );
 };
