@@ -20,7 +20,7 @@ export default async function handler(
 ) {
   try {
     await connectToDatabase();
-    const animes = await AnimeModel.find({});
+    const animes = await AnimeModel.find({}).sort({ name: "asc" });
 
     res.status(200).json({ data: animes });
   } catch (error) {

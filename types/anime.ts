@@ -9,9 +9,9 @@ export interface IAnime {
   id: number;
   name: string;
   russian: string;
-  status: Statuses;
+  status?: Statuses;
   rating?: number | null;
-  episodes: number;
-  episodes_watch: number | null;
-  comment: string | null;
+  episodes?: number;
+  episodes_watch?: number | null;
+  comment?: string | null;
 }

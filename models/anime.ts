@@ -13,15 +13,15 @@ import { IAnime, Statuses } from "types/anime";
 })
 class AnimeClass implements IAnime {
   @prop({ enum: Statuses, type: String })
-  public status!: IAnime["status"];
+  public status?: IAnime["status"];
   @prop()
-  public rating!: IAnime["rating"];
+  public rating?: IAnime["rating"];
   @prop()
-  public episodes!: IAnime["episodes"];
+  public episodes?: IAnime["episodes"];
   @prop()
-  public episodes_watch!: IAnime["episodes_watch"];
+  public episodes_watch?: IAnime["episodes_watch"];
   @prop()
-  public comment!: IAnime["comment"];
+  public comment?: IAnime["comment"];
   @prop()
   public name!: IAnime["name"];
   @prop()

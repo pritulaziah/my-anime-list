@@ -1,15 +1,24 @@
 import Head from "next/head";
 import { IAnime } from "types/anime";
-import { getAnimes } from "pages/api/animes";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Table from "components/Table";
 import Panel from "components/Panel";
+import axios from "axios";
 
-const Home = ({
-  data: defaultAnimes,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [animes, setAnimes] = useState<IAnime[]>(defaultAnimes);
+const Home = ({}) => {
+  const [animes, setAnimes] = useState<IAnime[]>([]);
+
+  useEffect(() => {
+    const getAnimes = async () => {
+      try {
+        const response = await axios.get<{ data: IAnime[] }>("/api/animes");
+
+        setAnimes(response.data.data);
+      } catch (error) {}
+    };
+
+    getAnimes();
+  }, []);
 
   return (
     <div>
@@ -20,26 +29,12 @@ const Home = ({
       </Head>
       <main className="min-h-screen p-4">
         <Panel />
-        <Table data={animes} />
+        <div className="overflow-auto">
+          <Table data={animes} />
+        </div>
       </main>
     </div>
   );
-};
-
-export const getServerSideProps: GetServerSideProps<{
-  data: IAnime[];
-}> = async (context) => {
-  let animes: IAnime[] = [];
-
-  try {
-    animes = JSON.parse(JSON.stringify(await getAnimes()));
-  } catch (error) {}
-
-  return {
-    props: {
-      data: animes,
-    },
-  };
 };
 
 export default Home;

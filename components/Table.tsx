@@ -8,6 +8,9 @@ import {
 import statusCollection from "constants/statusCollection";
 import Rating from "components/Rating";
 import Progress from "components/Progress";
+import Button from "components/common/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const columnHelper = createColumnHelper<IAnime>();
 
@@ -16,13 +19,16 @@ const columns = [
     id: "name",
     cell: (cell) => <b>{cell.getValue()}</b>,
     header: () => <span>Name</span>,
-    minSize: 350,
+    minSize: 400,
   }),
-  columnHelper.accessor((row) => statusCollection[row.status], {
-    id: "status",
-    cell: (cell) => cell.getValue(),
-    header: () => <span>Status</span>,
-  }),
+  columnHelper.accessor(
+    (row) => (row.status ? statusCollection[row.status] : ""),
+    {
+      id: "status",
+      cell: (cell) => cell.getValue(),
+      header: () => <span>Status</span>,
+    }
+  ),
   columnHelper.accessor((row) => row.rating, {
     id: "rating",
     cell: (cell) => {
@@ -63,6 +69,31 @@ const columns = [
     cell: (cell) => <span>{cell.getValue()}</span>,
     header: () => <span>Comment</span>,
     minSize: 400,
+  }),
+  columnHelper.display({
+    id: "actions",
+    cell: () => (
+      <div className="flex w-full space-x-2">
+        <Button color="red" variant="outlined">
+          <FontAwesomeIcon
+            icon={faTrash}
+            width={14}
+            height={14}
+            className="mr-1"
+          />
+          Delete
+        </Button>
+        <Button variant="outlined">
+          <FontAwesomeIcon
+            icon={faEdit}
+            width={14}
+            height={14}
+            className="mr-1"
+          />
+          Edit
+        </Button>
+      </div>
+    ),
   }),
 ];
 
