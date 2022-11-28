@@ -1,8 +1,18 @@
-import { getModelForClass, prop } from "@typegoose/typegoose";
+import {
+  getModelForClass,
+  prop,
+  Severity,
+  modelOptions,
+} from "@typegoose/typegoose";
 import { IAnime, Statuses } from "types/anime";
 
+@modelOptions({
+  options: {
+    allowMixed: Severity.ALLOW,
+  },
+})
 class AnimeClass implements IAnime {
-  @prop({ enum: Statuses })
+  @prop({ enum: Statuses, type: String })
   public status!: IAnime["status"];
   @prop()
   public rating!: IAnime["rating"];
