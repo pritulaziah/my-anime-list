@@ -1,18 +1,21 @@
-import { IAnime } from "types/anime";
 import {
   useReactTable,
   getCoreRowModel,
   flexRender,
   ColumnDef,
+  RowData,
 } from "@tanstack/react-table";
 
-interface ITableProps {
-  data: IAnime[];
-  columns: ColumnDef<IAnime, any>[];
+interface ITableProps<T> {
+  data: T[];
+  columns: ColumnDef<T, any>[];
 }
 
-const Table = ({ data, columns }: ITableProps) => {
-  const table = useReactTable({
+const Table = <TData extends RowData>({
+  data,
+  columns,
+}: ITableProps<TData>) => {
+  const table = useReactTable<TData>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),

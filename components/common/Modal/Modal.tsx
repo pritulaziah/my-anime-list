@@ -2,23 +2,26 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { canUseDOM } from "./utils";
 import ModalBody from "./ModalBody";
-import ModalContext from "./ModalContext";
+import ModalContext, { IModalContext } from "./ModalContext";
 import ModalHeader from "./ModalHeader";
 import ModalInner from "./ModalInner";
 
 interface IProps {
   show?: boolean;
-  onHide: () => void;
+  onHide: IModalContext["onHide"];
   children: React.ReactNode;
+  size?: IModalContext["size"];
 }
 
-const Modal = ({ show = false, onHide, children }: IProps) => {
+const Modal = ({ show = false, onHide, children, size = "md" }: IProps) => {
   if (!canUseDOM || !show) {
     return null;
   }
 
+  const context: IModalContext = { onHide, size };
+
   return (
-    <ModalContext.Provider value={{ onHide }}>
+    <ModalContext.Provider value={context}>
       {ReactDOM.createPortal(
         <ModalInner>{children}</ModalInner>,
         document.body
