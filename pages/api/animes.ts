@@ -3,26 +3,15 @@ import connectToDatabase from "lib/connectToDatabase";
 import AnimeModel from "models/anime";
 import { IAnime } from "types/anime";
 
-type Data = {
-  data: IAnime[];
-};
-
-export const getAnimes = async (): Promise<IAnime[]> => {
-  await connectToDatabase();
-  const animes = await AnimeModel.find({});
-
-  return animes;
-};
-
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<IAnime[]>
 ) {
   try {
     await connectToDatabase();
-    const animes = await AnimeModel.find({}).sort({ name: "asc" });
+    const data = await AnimeModel.find({}).sort({ name: "asc" });
 
-    res.status(200).json({ data: animes });
+    res.status(200).json(data);
   } catch (error) {
     res.status(404).end();
   }

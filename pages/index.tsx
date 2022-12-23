@@ -9,9 +9,7 @@ const AnimePage = () => {
         <meta name="description" content="" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="min-h-screen p-4">
-        <Anime />
-      </main>
+      <Anime />
     </div>
   );
 };

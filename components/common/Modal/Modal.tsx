@@ -5,6 +5,7 @@ import ModalBody from "./ModalBody";
 import ModalContext, { IModalContext } from "./ModalContext";
 import ModalHeader from "./ModalHeader";
 import ModalInner from "./ModalInner";
+import ModalFooter from "./ModalFooter";
 
 interface IProps {
   show?: boolean;
@@ -32,5 +33,6 @@ const Modal = ({ show = false, onHide, children, size = "md" }: IProps) => {
 
 Modal.Body = ModalBody;
 Modal.Header = ModalHeader;
+Modal.Footer = ModalFooter;
 
 export default Modal;

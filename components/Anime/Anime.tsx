@@ -16,20 +16,6 @@ export type ModalAction = "idle" | "create" | "delete" | "update";
 
 const columnHelper = createColumnHelper<IAnime>();
 
-const getModalTitle = (action: ModalAction) => {
-  if (action === "idle") {
-    return undefined;
-  }
-
-  const titles = {
-    create: "Добавить",
-    delete: "Удалить",
-    update: "Изменить",
-  };
-
-  return `${titles[action]} аниме`;
-};
-
 const Anime = () => {
   const [animes, setAnimes] = useState<IAnime[]>([]);
   const [modalInfo, setModalInfo] = useState<{
@@ -126,16 +112,16 @@ const Anime = () => {
   useEffect(() => {
     const getAnimes = async () => {
       try {
-        const response = await axios.get<{ data: IAnime[] }>("/api/animes");
+        const response = await axios.get<IAnime[]>("/api/animes");
 
-        setAnimes(response.data.data);
+        setAnimes(response.data);
       } catch (error) {}
     };
 
     getAnimes();
   }, []);
 
-  const openModal = () => setModalInfo({ action: "create" });
+  const addNewAnime = () => setModalInfo({ action: "create" });
 
   const closeModal = useCallback(
     () => setModalInfo({ action: "idle", currentId: null }),
@@ -143,20 +129,17 @@ const Anime = () => {
   );
 
   return (
-    <>
+    <div className="min-h-screen p-4">
       <div className="flex items-center mb-6">
-        <Button onClick={openModal}>Add new anime</Button>
+        <Button onClick={addNewAnime}>Add new anime</Button>
       </div>
       <div className="overflow-auto">
         <Table data={animes} columns={columns} />
       </div>
       <Modal show={modalInfo.action !== "idle"} onHide={closeModal} size="4xl">
-        <Modal.Header>{getModalTitle(modalInfo.action)}</Modal.Header>
-        <Modal.Body>
-          <AnimeModalContent />
-        </Modal.Body>
+        <AnimeModalContent action={modalInfo.action} />
       </Modal>
-    </>
+    </div>
   );
 };
 

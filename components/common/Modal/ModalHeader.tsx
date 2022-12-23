@@ -13,7 +13,7 @@ const ModalHeader = ({ children, className }: IProps) => {
   const context = useContext(ModalContext);
 
   return (
-    <div className="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600 mb-3">
+    <div className="flex justify-between items-start py-4 rounded-t border-b dark:border-gray-600 mb-3">
       <h2 className={clsx("text-3xl", className)}>{children}</h2>
       <button
         type="button"
