@@ -4,7 +4,7 @@ import {
   Severity,
   modelOptions,
 } from "@typegoose/typegoose";
-import { IAnime, Statuses } from "types/anime";
+import { IAnime, AnimeStatus } from "types/anime";
 
 @modelOptions({
   options: {
@@ -12,7 +12,7 @@ import { IAnime, Statuses } from "types/anime";
   },
 })
 class AnimeClass implements IAnime {
-  @prop({ enum: Statuses, type: String })
+  @prop({ enum: AnimeStatus, type: String })
   public status?: IAnime["status"];
   @prop()
   public rating?: IAnime["rating"];
@@ -26,8 +26,6 @@ class AnimeClass implements IAnime {
   public name!: IAnime["name"];
   @prop()
   public id!: IAnime["id"];
-  @prop()
-  public russian!: IAnime["russian"];
 }
 
 const AnimeModel = getModelForClass(AnimeClass, {

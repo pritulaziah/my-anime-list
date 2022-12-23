@@ -25,7 +25,7 @@ const Anime = () => {
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor((row) => `${row.name} / ${row.russian}`, {
+      columnHelper.accessor("name", {
         id: "name",
         cell: (cell) => <b>{cell.getValue()}</b>,
         header: () => <span>Name</span>,
@@ -109,17 +109,17 @@ const Anime = () => {
     []
   );
 
-  useEffect(() => {
-    const getAnimes = async () => {
-      try {
-        const response = await axios.get<IAnime[]>("/api/animes");
+  const getAnimes = useCallback(async () => {
+    try {
+      const response = await axios.get<IAnime[]>("/api/animes");
 
-        setAnimes(response.data);
-      } catch (error) {}
-    };
-
-    getAnimes();
+      setAnimes(response.data);
+    } catch (error) {}
   }, []);
+
+  useEffect(() => {
+    getAnimes();
+  }, [getAnimes]);
 
   const addNewAnime = () => setModalInfo({ action: "create" });
 
@@ -137,7 +137,7 @@ const Anime = () => {
         <Table data={animes} columns={columns} />
       </div>
       <Modal show={modalInfo.action !== "idle"} onHide={closeModal} size="4xl">
-        <AnimeModalContent action={modalInfo.action} />
+        <AnimeModalContent action={modalInfo.action} refetch={getAnimes} />
       </Modal>
     </div>
   );

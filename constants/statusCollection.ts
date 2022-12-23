@@ -1,12 +1,12 @@
-import { Statuses } from "types/anime";
+import { AnimeStatus } from "types/anime";
 
 const statusCollection: {
-  [key in Statuses]: string;
+  [key in AnimeStatus]: string;
 } = {
-  [Statuses.Closed]: "Бросил",
-  [Statuses.Done]: "Просмотренно",
-  [Statuses.InProgress]: "Смотрю",
-  [Statuses.Paused]: "На паузе",
+  [AnimeStatus.Closed]: "Бросил",
+  [AnimeStatus.Done]: "Просмотренно",
+  [AnimeStatus.InProgress]: "Смотрю",
+  [AnimeStatus.Paused]: "На паузе",
 };
 
 export default statusCollection;

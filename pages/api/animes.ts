@@ -7,12 +7,37 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IAnime[]>
 ) {
-  try {
-    await connectToDatabase();
-    const data = await AnimeModel.find({}).sort({ name: "asc" });
+  const requestMethod = req.method;
 
-    res.status(200).json(data);
-  } catch (error) {
-    res.status(404).end();
+  switch (requestMethod) {
+    case "POST":
+      const requestBody = req.body;
+      const { name, rating } = requestBody;
+      await AnimeModel.updateOne(
+        {
+          name,
+        },
+        {
+          $setOnInsert: { name, rating },
+        },
+        { upsert: true }
+      );
+
+      res.status(200).end();
+      break;
+    case "GET":
+      try {
+        await connectToDatabase();
+        const animes = await AnimeModel.find({}).sort({ name: "asc" });
+
+        res.status(200).json(animes);
+      } catch (error) {
+        res.status(404).end();
+      }
+      break;
+    default:
+      res.setHeader("Allow", ["GET", "POST"]);
+      res.status(405).end(`Method ${requestMethod} Not Allowed`);
+      break;
   }
 }

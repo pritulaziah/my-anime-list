@@ -65,7 +65,7 @@ const ModalInner = ({ children }: IProps) => {
         aria-hidden="true"
         className={clsx(
           sizes[context.size],
-          "overflow-hidden fixed top-0 md:top-1/2 left-0 md:left-1/2 z-50 p-4 w-full md:max-h-4/5 h-auto md:max-h-[80%] md:-translate-x-1/2 md:-translate-y-1/2 bg-white h-full rounded-lg shadow p-4 flex flex-col"
+          "overflow-hidden fixed top-0 md:top-1/2 left-0 md:left-1/2 z-50 p-4 w-full md:max-h-4/5 h-auto md:max-h-[80%] md:-translate-x-1/2 md:-translate-y-1/2 bg-white rounded-lg shadow p-4 flex flex-col"
         )}
       >
         {children}

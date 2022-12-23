@@ -1,4 +1,4 @@
-export enum Statuses {
+export enum AnimeStatus {
   Closed = "closed",
   Done = "done",
   InProgress = "inProgress",
@@ -8,8 +8,7 @@ export enum Statuses {
 export interface IAnime {
   id: number;
   name: string;
-  russian: string;
-  status?: Statuses;
+  status?: AnimeStatus;
   rating?: number | null;
   episodes?: number;
   episodes_watch?: number | null;

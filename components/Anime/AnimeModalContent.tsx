@@ -6,6 +6,12 @@ import Rating from "components/common/Rating";
 import { useForm, Controller } from "react-hook-form";
 import { IAnime } from "types/anime";
 import { ModalAction } from "./Anime";
+import axios from "axios";
+
+interface IAnimeBody {
+  name: IAnime["name"];
+  rating: number | null;
+}
 
 type FormValues = {
   name: IAnime["name"];
@@ -28,14 +34,27 @@ const getModalTitle = (action: ModalAction) => {
 
 interface IProps {
   action: ModalAction;
+  refetch: () => void;
 }
 
-const AnimeModalContent = ({ action }: IProps) => {
-  const { register, control } = useForm<FormValues>({
+const AnimeModalContent = ({ action, refetch }: IProps) => {
+  const { register, control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       name: "",
       rating: null,
     },
+  });
+
+  const onSubmit = handleSubmit(async (data) => {
+    const body: IAnimeBody = {
+      name: data.name,
+      rating: data.rating || null,
+    };
+
+    try {
+      await axios.post("/api/animes", body);
+      refetch();
+    } catch (error) {}
   });
 
   return (
@@ -56,7 +75,7 @@ const AnimeModalContent = ({ action }: IProps) => {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button>Save</Button>
+        <Button onClick={onSubmit}>Save</Button>
       </Modal.Footer>
     </>
   );
