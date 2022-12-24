@@ -12,16 +12,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import AnimeModalContent from "./AnimeModalContent";
 
-export type ModalAction = "idle" | "create" | "delete" | "update";
-
 const columnHelper = createColumnHelper<IAnime>();
 
 const Anime = () => {
   const [animes, setAnimes] = useState<IAnime[]>([]);
   const [modalInfo, setModalInfo] = useState<{
-    action: ModalAction;
-    currentId?: null | number;
-  }>({ action: "idle", currentId: null });
+    action: "idle" | "create" | "delete" | "update";
+    currentAnime: IAnime | null;
+  }>({ action: "idle", currentAnime: null });
+
+  const addNewAnime = () =>
+    setModalInfo({ action: "create", currentAnime: null });
+
+  const closeModal = useCallback(
+    () => setModalInfo({ action: "idle", currentAnime: null }),
+    []
+  );
 
   const columns = useMemo(
     () => [
@@ -39,7 +45,7 @@ const Anime = () => {
           header: () => <span>Status</span>,
         }
       ),
-      columnHelper.accessor((row) => row.rating, {
+      columnHelper.accessor("rating", {
         id: "rating",
         cell: (cell) => {
           const cellRating = cell.getValue();
@@ -74,7 +80,7 @@ const Anime = () => {
         },
         header: () => <span>Progress</span>,
       }),
-      columnHelper.accessor((row) => row.comment, {
+      columnHelper.accessor("comment", {
         id: "comment",
         cell: (cell) => <span>{cell.getValue()}</span>,
         header: () => <span>Comment</span>,
@@ -82,7 +88,7 @@ const Anime = () => {
       }),
       columnHelper.display({
         id: "actions",
-        cell: () => (
+        cell: (cell) => (
           <div className="flex w-full space-x-2">
             <Button color="red" variant="outlined">
               <FontAwesomeIcon
@@ -93,7 +99,15 @@ const Anime = () => {
               />
               Delete
             </Button>
-            <Button variant="outlined">
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setModalInfo({
+                  action: "update",
+                  currentAnime: cell.row.original,
+                });
+              }}
+            >
               <FontAwesomeIcon
                 icon={faEdit}
                 width={14}
@@ -121,12 +135,7 @@ const Anime = () => {
     getAnimes();
   }, [getAnimes]);
 
-  const addNewAnime = () => setModalInfo({ action: "create" });
-
-  const closeModal = useCallback(
-    () => setModalInfo({ action: "idle", currentId: null }),
-    []
-  );
+  console.log(modalInfo);
 
   return (
     <div className="min-h-screen p-4">
@@ -136,8 +145,12 @@ const Anime = () => {
       <div className="overflow-auto">
         <Table data={animes} columns={columns} />
       </div>
-      <Modal show={modalInfo.action !== "idle"} onHide={closeModal} size="4xl">
-        <AnimeModalContent action={modalInfo.action} refetch={getAnimes} />
+      <Modal
+        show={["create", "update"].includes(modalInfo.action)}
+        onHide={closeModal}
+        size="4xl"
+      >
+        <AnimeModalContent refetch={getAnimes} anime={modalInfo.currentAnime} />
       </Modal>
     </div>
   );

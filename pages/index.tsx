@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Anime from "components/Anime/Anime";
+import Anime from "components/anime/Anime";
 
 const AnimePage = () => {
   return (

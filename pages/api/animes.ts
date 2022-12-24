@@ -13,13 +13,14 @@ export default async function handler(
     case "POST":
       const requestBody = req.body;
       const { name, rating } = requestBody;
-      await AnimeModel.updateOne(
+
+      console.log(name, rating);
+
+      await AnimeModel.findOneAndUpdate(
         {
           name,
         },
-        {
-          $setOnInsert: { name, rating },
-        },
+        { name, rating },
         { upsert: true }
       );
 

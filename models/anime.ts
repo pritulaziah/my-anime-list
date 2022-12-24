@@ -15,14 +15,14 @@ class AnimeClass implements IAnime {
   @prop({ enum: AnimeStatus, type: String })
   public status?: IAnime["status"];
   @prop()
-  public rating?: IAnime["rating"];
+  public rating!: IAnime["rating"];
   @prop()
   public episodes?: IAnime["episodes"];
   @prop()
   public episodes_watch?: IAnime["episodes_watch"];
   @prop()
   public comment?: IAnime["comment"];
-  @prop()
+  @prop({ index: true })
   public name!: IAnime["name"];
   @prop()
   public id!: IAnime["id"];
