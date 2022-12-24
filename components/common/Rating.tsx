@@ -50,9 +50,9 @@ const Rating = React.forwardRef<HTMLDivElement, IProps>(
           width={size}
           height={size}
           className="inline-block"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onClick={handleClick}
+          onMouseEnter={readonly ? undefined : handleMouseEnter}
+          onMouseLeave={readonly ? undefined : handleMouseLeave}
+          onClick={readonly ? undefined : handleClick}
         />
       );
     };
