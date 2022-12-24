@@ -3,6 +3,8 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 
+const getRatingValue = (value?: number | null) => value ?? 0;
+
 interface IProps {
   count?: number;
   value?: number | null;
@@ -24,16 +26,18 @@ const Rating = React.forwardRef<HTMLDivElement, IProps>(
     },
     ref
   ) => {
-    const [ratingValue, setRatingValue] = useState(initialValue ?? 0);
+    const [ratingValue, setRatingValue] = useState(
+      getRatingValue(initialValue)
+    );
     const [hoverRatingValue, setHoverRatingValue] = useState<number | null>(
       null
     );
 
     useEffect(() => {
-      setRatingValue(initialValue ?? 0);
+      setRatingValue(getRatingValue(initialValue));
     }, [initialValue]);
 
-    const renderStart = (index: number) => {
+    const stars = Array.from({ length: count }).map((_, index) => {
       const value = index + 1;
       const handleMouseEnter = () => setHoverRatingValue(value);
       const handleMouseLeave = () =>
@@ -55,11 +59,7 @@ const Rating = React.forwardRef<HTMLDivElement, IProps>(
           onClick={readonly ? undefined : handleClick}
         />
       );
-    };
-
-    const stars = Array.from({ length: count }).map((_, index) =>
-      renderStart(index)
-    );
+    });
 
     const valuePercentage = Math.round(
       ((hoverRatingValue ?? ratingValue) / count) * 100
@@ -90,5 +90,7 @@ const Rating = React.forwardRef<HTMLDivElement, IProps>(
     );
   }
 );
+
+Rating.displayName = "Rating";
 
 export default Rating;
